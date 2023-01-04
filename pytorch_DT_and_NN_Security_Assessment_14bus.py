@@ -116,7 +116,7 @@ NN = nn.Sequential(nn.Linear(n_in, n_hidden), # Input layer.
                    nn.Linear(n_hidden, n_hidden), # Third hidden layer
                    nn.ReLU(),
                    nn.Linear(n_hidden, n_out),
-                   nn.Softmax(dim=1)) # This dim seems to be right.
+                   nn.Softmax(dim=1))
 
 loss_function = nn.BCELoss()
 optimizer = torch.optim.SGD(NN.parameters(), lr=learning_rate)
@@ -128,7 +128,7 @@ min_n_epochs = 50
 timer_start = time.time()
 losses = []
 for epoch in range(n_epochs + 1):
-    if epoch % 100 == 0:
+    if epoch % 100 == 0: # Print only every 100 epochs, for progress checking.
         print(f"Epoch #: {epoch}")
     yp_N1_train = NN(X_N1_train)
     loss = loss_function(yp_N1_train, y_N1_train)
@@ -155,12 +155,13 @@ print(f"NN training accuracy: {round(acc_train, 2)}%")
 print(f"NN test accuracy {round(acc_test, 2)}%")
 # WARNING: We introduce a probability treshold in the classification by computing 
 #          MCC based on np.round (assumed to be 0.5)
+# ^should be doing the if y_1 > y_2
 mcc_train = compute_mcc(y_N1_train.numpy(), np.round(yp_N1_train.detach().numpy(), 0), X_N1_train)
 mcc_test = compute_mcc(y_N1_test.numpy(), np.round(yp_N1_test.detach().numpy(), 0), X_N1_test)
 print(f"NN training MCC: {round(mcc_train, 2)}")
 print(f"NN test MCC {round(mcc_test, 2)}")
 # INSIGHT: Accuracy may be above 95%, but the MCC can still be dogshit (0.35-0.70).
-# 3.1.5 This is due to the data not being balanced, and accuracy thus not being 
+# 3.1.5 This is likely due to the data not being balanced, and accuracy thus not being 
 # a good metric for this scenario.
 
 plt.figure(figsize=[8, 6])
