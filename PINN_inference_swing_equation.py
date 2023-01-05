@@ -239,7 +239,7 @@ if __name__ == "__main__":
 
     # --------------------------------------------------------------------------------------------
     # Initialise number of nodes in the layers
-    # Input layer: 4 inputs (delta'', delta', delta, p)
+    # Input layer: 4 inputs (time, power, delta, delta')
     # 2 hidden layers of 100 nodes each
     # Output layer
     # --------------------------------------------------------------------------------------------
